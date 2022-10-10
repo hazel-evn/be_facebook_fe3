@@ -15,7 +15,7 @@ app.get("/",(req,res) => {
 app.get("/books",(req,res) => {
     res.send("Welcome from books");
 })
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT,() => {
     console.log("Server is running in", PORT);
 })
