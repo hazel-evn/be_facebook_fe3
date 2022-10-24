@@ -4,4 +4,5 @@ exports.generateToken = (payload,expired)=>{
     return jwt.sign(payload, {
         expiresIn: expired
     })
+    
 }
