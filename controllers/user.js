@@ -3,6 +3,7 @@ const { validateEamil, validateLenght } = require("../helpers/validation");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../helpers/tokens");
+const { json } = require("express");
 
 exports.register = async (req, res) => {
     try {
@@ -48,6 +49,29 @@ exports.register = async (req, res) => {
         console.log(emailVerificationToken);
 
         res.json(user)
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+exports.login = async (req, res) =>{
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({email});
+        if(!user){
+            return res
+            .status(400)
+            .json({
+                message:"The email address is not conected to an account"
+            });
+        }
+        const check = await bcrypt.compare(password, user.password);
+        if(!check){
+            return res.status(400).json({
+                message:"Please try again"
+            })
+        }
+        // const token = generateToken({id: user._id.toString() }, "7d")
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
