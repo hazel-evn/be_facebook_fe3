@@ -13,6 +13,7 @@ exports.authUser = async (req, res, next) =>{
             }
             req.user = user;
             next();
+            
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
