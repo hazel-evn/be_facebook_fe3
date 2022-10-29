@@ -39,4 +39,5 @@ exports.sendVerificationEmail = (email, name, url) => {
     if (err) return err;
     return res;
   });
+  
 };
