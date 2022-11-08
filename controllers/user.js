@@ -9,7 +9,7 @@ const {
   const jwt = require("jsonwebtoken");
   const bcrypt = require("bcrypt");
   const { generateToken } = require("../helpers/tokens");
-  const { sendVerificationEmail } = require("../helpers/mailer");
+  const { sendVerificationEmail, sendResetCode } = require("../helpers/mailer");
   const generateCode = require("../helpers/generateCode");
 
 
@@ -173,6 +173,21 @@ const {
       return res.status(200).json({
         message: "Email reset code has been sent to your email",
       });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  exports.validateResetCode = async (req, res) => {
+    try {
+      const { email, code } = req.body;
+      const user = await User.findOne({ email });
+      const Dbcode = await Code.findOne({ user: user._id });
+      if (Dbcode.code !== code) {
+        return res.status(400).json({
+          message: "Verification code is wrong..",
+        });
+      }
+      return res.status(200).json({ message: "ok" });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
