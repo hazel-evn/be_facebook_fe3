@@ -290,3 +290,34 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+  exports.addFriend = async (req, res) => {
+    try {
+      if (req.user.id !== req.params.id) {
+        const sender = await User.findById(req.user.id);
+        const receiver = await User.findById(req.params.id);
+        if (
+          !receiver.requests.includes(sender._id) &&
+          !receiver.friends.includes(sender._id)
+        ) {
+          await receiver.updateOne({
+            $push: { requests: sender._id },
+          });
+          await receiver.updateOne({
+            $push: { followers: sender._id },
+          });
+          await sender.updateOne({
+            $push: { following: receiver._id },
+          });
+          res.json({ message: "friend request has been sent" });
+        } else {
+          return res.status(400).json({ message: "Already sent" });
+        }
+      } else {
+        return res
+          .status(400)
+          .json({ message: "You can't send a request to yourself" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
