@@ -14,7 +14,8 @@ const { register,
         addFriend, 
         follow, 
         unfollow,
-        unfriend
+        unfriend,
+        search
     } = require("../controllers/user");
 
 const router = express.Router();
@@ -36,5 +37,6 @@ router.put("/addFriend/:id", authUser, addFriend);
 router.put("/follow/:id", authUser, follow);
 router.put("/unfollow/:id", authUser, unfollow);
 router.put("/unfriend/:id", authUser, unfriend);
+router.post("/search/:searchTerm", authUser, search);
 
 module.exports = router;
