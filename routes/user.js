@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { register, login, activateAccount, findUser, sendResetPasswordCode, validateResetCode, changePassword, getProfile, updateProfilePicture, updateCover, updateDetails, addFriend} = require("../controllers/user");
+const { register, login, activateAccount, findUser, sendResetPasswordCode, validateResetCode, changePassword, getProfile, updateProfilePicture, updateCover, updateDetails, addFriend, follow} = require("../controllers/user");
 
 const router = express.Router();
 
@@ -18,5 +18,6 @@ router.put("/updateProfilePicture", authUser, updateProfilePicture);
 router.put("/updateCover", authUser, updateCover);
 router.put("/updateDetails", authUser, updateDetails);
 router.put("/addFriend/:id", authUser, addFriend);
+router.put("/follow/:id", authUser, follow);
 
 module.exports = router;
