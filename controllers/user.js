@@ -321,6 +321,41 @@ const {
       res.status(500).json({ message: error.message });
     }
   };
+  exports.unfriend = async (req, res) => {
+    try {
+      if (req.user.id !== req.params.id) {
+        const sender = await User.findById(req.user.id);
+        const receiver = await User.findById(req.params.id);
+        if (
+          receiver.friends.includes(sender._id) &&
+          sender.friends.includes(receiver._id)
+        ) {
+          await receiver.update({
+            $pull: {
+              friends: sender._id,
+              following: sender._id,
+              followers: sender._id,
+            },
+          });
+          await sender.update({
+            $pull: {
+              friends: receiver._id,
+              following: receiver._id,
+              followers: receiver._id,
+            },
+          });
+  
+          res.json({ message: "unfriend request accepted" });
+        } else {
+          return res.status(400).json({ message: "Already not friends" });
+        }
+      } else {
+        return res.status(400).json({ message: "You can't unfriend yourself" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
   exports.follow = async (req, res) => {
     try {
       if (req.user.id !== req.params.id) {
