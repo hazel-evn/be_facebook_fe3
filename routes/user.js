@@ -38,5 +38,6 @@ router.put("/follow/:id", authUser, follow);
 router.put("/unfollow/:id", authUser, unfollow);
 router.put("/unfriend/:id", authUser, unfriend);
 router.post("/search/:searchTerm", authUser, search);
+router.put("/addToSearchHistory", authUser, addToSearchHistory);
 
 module.exports = router;
