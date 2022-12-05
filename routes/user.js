@@ -15,7 +15,8 @@ const { register,
         follow, 
         unfollow,
         unfriend,
-        search
+        search,
+        addToSearchHistory
     } = require("../controllers/user");
 
 const router = express.Router();
